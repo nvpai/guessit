@@ -34,35 +34,69 @@ Devvit.addCustomPostType({
   name: 'Experience Post',
   height: 'regular',
   render: (_context) => {
-    const [right, setCounter] = useState(0);
+    // const [right, setCounter] = useState(0);
+    
+    const generateRandomRGBColors = (count: number): string[] => {
+      const randomColor = () =>
+        `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+      return Array.from({ length: count }, randomColor);
+    };
+    
+    
+    const randomColors = generateRandomRGBColors(3);
 
+    const colorsOption = [...randomColors]
+    const pickRandomColor = () => {
+      const index = Math.floor(Math.random() * randomColors.length); 
+      const color = randomColors[index]; 
+      randomColors.splice(index, 1); 
+      return color;
+    };
+    
     return (
       <blocks>
         
         <vstack backgroundColor='#fff5ee' height="100%" width="100%" gap="medium" alignment="center middle">
           <text alignment="bottom center" color="#6a5acd" weight="bold" size="xxlarge">{`Guess the sequence of color blocks`}</text>
           <hstack gap="medium" alignment="center middle">
-            <vstack height="40px" width="100px" backgroundColor="red" alignment="center middle">
-            {/* <button size="medium" width="50px" >Option 1</button>
-            <spacer size="medium" />
-            <button size="medium" appearance="secondary">Option 2</button>
-            <button size="medium" appearance="secondary">Option 3</button> */}
-            </vstack>
+              {Array.from({ length: 3 }).map((_, index) => (
+              <vstack
+                key={`block-${index}`}
+                id={`block-${index + 1}`}
+                height="40px"
+                width="40px"
+                backgroundColor={pickRandomColor()}
+                alignment="center middle"
+              >
+                
+              </vstack>
+            ))}
+
           </hstack>
           
+          <text alignment="top end" color="#6a5acd" weight="bold" size="xxlarge">{`Select from the below`}</text>
           
-          {/* <image
-            url="logo.png"
-            description="logo"
-            imageHeight={256}
-            imageWidth={256}
-            height="48px"
-            width="48px"
-          /> */}
-          {/* <button appearance="primary" onPress={() => setCounter((counter) => counter + 1)}>
-            Button!
-          </button> */}
+          <hstack gap="small" alignment="center middle">
+            {colorsOption.map((color, index) => (
+              <hstack
+                key={`color-option-${index}`}
+                height="40px"
+                width="40px"
+                backgroundColor={color} 
+                alignment="center middle"
+              >
+                
+              </hstack>
+            ))}
+          </hstack>
         </vstack>
+
+        
+        
+        
+        
+
+
       </blocks>
     );
   },
